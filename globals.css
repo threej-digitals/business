@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+div,
+.cscroll {
+  scrollbar-width: thin;
+  scrollbar-color: red purple;
+}
+div::-webkit-scrollbar,
+.cscroll::-webkit-scrollbar {
+  @apply w-2 h-1;
+}
+div::-webkit-scrollbar-track,
+.cscroll::-webkit-scrollbar-track {
+  @apply rounded-sm;
+}
+div::-webkit-scrollbar-thumb,
+.cscroll::-webkit-scrollbar-thumb {
+  @apply bg-slate-600 rounded-md;
+}
+a {
+  @apply text-sky-500 hover:text-sky-800 visited:text-purple-600;
+}
+
+#mobileSidebar ul li a {
+  @apply flex gap-2 p-2 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-orange-900;
+}
