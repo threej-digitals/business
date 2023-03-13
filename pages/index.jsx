@@ -9,7 +9,7 @@ export default function Home({ cookies, location }) {
         title="Lekhpal Book"
         description="Keep track of all your business activities"
       />
-      <GlobalContextProvider cookies={cookies} location={location}>
+      <GlobalContextProvider cookies={cookies} location={location} salt={salt}>
         <Layout />
         <h2>Home</h2>
       </GlobalContextProvider>

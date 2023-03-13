@@ -8,9 +8,25 @@ import ReportIcon from "@/svg/reportIcon";
 import SalesIcon from "@/svg/salesIcon";
 import SupplierIcon from "@/svg/supplierIcon";
 import WorkerIcon from "@/svg/workerIcon";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import Button from "./button";
 
+function Profile() {
+  if (Cookies?.lpbBID) {
+    return (
+      <div>
+        <OnlineShopIcon width={40} height={40} />
+      </div>
+    );
+  } else {
+    return (
+      <Link href="/login" style={{ padding: "0", background: "transparent" }}>
+        <Button text="Sign In / Log In" />
+      </Link>
+    );
+  }
+}
 export default function Sidebar() {
   return (
     <>
@@ -20,12 +36,7 @@ export default function Sidebar() {
       >
         <ul>
           <li>
-            <Link
-              href="/login"
-              style={{ padding: "0", background: "transparent" }}
-            >
-              <Button text="Sign In / Log In" />
-            </Link>
+            <Profile />
           </li>
         </ul>
         <ul className="flex flex-col gap-3 mt-4 ">

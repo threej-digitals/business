@@ -45,6 +45,10 @@ Thanks,
 *ThreeJ - Digital services*`;
 
       try {
+        await threej.query("DELETE FROM ?? WHERE MOBILENO = ?", [
+          process.env.OTPTABLE,
+          from,
+        ]);
         await threej.query("INSERT INTO ??(MOBILENO, OTP) VALUES(?, ?)", [
           process.env.OTPTABLE,
           from,

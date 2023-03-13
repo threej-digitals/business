@@ -1,13 +1,36 @@
+"use client";
 import Layout from "@/components/layout";
 import HeadAndMetaTag from "@/components/head";
 import GlobalContextProvider from "@/context/global";
 import Button from "@/components/button";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function Login({ cookies, location }) {
-  if (cookies?.lpbUserId) {
-    return (location.href = location.base);
-  }
+  const router = useRouter();
+  useEffect(() => {
+    if (cookies?.lpbBID) {
+      router.push("/settings");
+    }
+  }, []);
 
+  async function verifyOTP(el) {
+    el.preventDefault();
+    let mobileNo = el.target.WA_mobileNo.value;
+    let otp = el.target.otp.value;
+    const result = await fetch(
+      location.base + "/api/auth?phone=" + mobileNo + "&otp=" + otp
+    );
+    const res = await result.json();
+    if (res.ok && res.message == "verified!") {
+      Cookies.set("lpbBID", res.jwt);
+      router.push("/settings");
+    } else {
+      alert(res.message);
+    }
+    return false;
+  }
   function MobileNoInput({ id }) {
     return (
       <div className="relative">
@@ -99,7 +122,7 @@ export default function Login({ cookies, location }) {
   function WhatsappLoginForm() {
     return (
       <section
-        className="bg-[#00000091] text-center fixed m-auto z-10 w-full h-full transition-all "
+        className="bg-[#00000091] text-center fixed top-0 m-auto z-10 w-full h-full transition-all "
         id="whatsappLoginForm"
       >
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -108,7 +131,7 @@ export default function Login({ cookies, location }) {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-orange-700 md:text-2xl ">
                 WhatsApp Login
               </h1>
-              <form className="space-y-6" action={location.base + "/api/auth"}>
+              <form className="space-y-6" action="#" onSubmit={verifyOTP}>
                 <MobileNoInput id="WA_mobileNo" />
                 <div className="relative">
                   <label
@@ -122,11 +145,11 @@ export default function Login({ cookies, location }) {
                     name="otp"
                     id="otp"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded focus:ring-sky-600 focus:border-sky-600 block w-full p-2.5 "
-                    placeholder="6 digit OTP"
+                    placeholder="XXXXXX"
                     required=""
                   />
                 </div>
-                <Button type="submit" text="Verify" onClick={() => {}} />
+                <Button type="submit" text="Verify" />
                 <Button
                   text="Close"
                   className="bg-transparent rounded-full"
