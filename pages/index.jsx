@@ -9,7 +9,7 @@ export default function Home({ cookies, location }) {
         title="Lekhpal Book"
         description="Keep track of all your business activities"
       />
-      <GlobalContextProvider cookies={cookies} location={location} salt={salt}>
+      <GlobalContextProvider cookies={cookies} location={location}>
         <Layout />
         <h2>Home</h2>
       </GlobalContextProvider>
@@ -24,7 +24,8 @@ export const getServerSideProps = (ctx) => {
       location: {
         base: process.env.NEXT_PUBLIC_BASE,
         host: ctx.req.headers.host,
-        href: ctx.req.headers.host + process.env.BASE + ctx.resolvedUrl,
+        href:
+          ctx.req.headers.host + process.env.NEXT_PUBLIC_BASE + ctx.resolvedUrl,
       },
     },
   };

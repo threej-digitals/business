@@ -36,7 +36,7 @@ export default function Login({ cookies, location }) {
       <div className="relative">
         <label
           htmlFor="phone"
-          className="absolute -top-3 px-2 left-1 text-sm text-gray-600 bg-white"
+          className="absolute -top-3 px-2 left-1 text-sm bg-white"
         >
           Mobile no
         </label>
@@ -71,12 +71,35 @@ export default function Login({ cookies, location }) {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-orange-700 md:text-2xl ">
                 Sign in to your business account
               </h1>
-              <form className="space-y-7" action="#">
+              <form
+                className="space-y-7"
+                method="POST"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  let mobileNo = e.target.mobileNo.value;
+                  let password = e.target.password.value;
+                  const result = await fetch(
+                    location.base +
+                      "/api/auth?phone=" +
+                      mobileNo +
+                      "&password=" +
+                      password
+                  );
+                  const res = await result.json();
+                  if (res.ok && res.message == "verified!") {
+                    Cookies.set("lpbBID", res.jwt);
+                    router.push("/settings");
+                  } else {
+                    alert(res.message);
+                  }
+                  return false;
+                }}
+              >
                 <MobileNoInput id="mobileNo" />
                 <div className="relative mt-4">
                   <label
                     htmlFor="password"
-                    className="absolute -top-3 px-2 left-1 text-sm text-gray-600 bg-white"
+                    className="absolute -top-3 px-2 left-1 text-sm bg-white"
                   >
                     pin / password
                   </label>
@@ -122,7 +145,7 @@ export default function Login({ cookies, location }) {
   function WhatsappLoginForm() {
     return (
       <section
-        className="bg-[#00000091] text-center fixed top-0 m-auto z-10 w-full h-full transition-all "
+        className="bg-[#00000091] text-center fixed m-auto z-10 w-full h-full transition-all "
         id="whatsappLoginForm"
       >
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -136,7 +159,7 @@ export default function Login({ cookies, location }) {
                 <div className="relative">
                   <label
                     htmlFor="otp"
-                    className="absolute -top-3 px-2 left-1 text-sm text-gray-500 bg-white"
+                    className="absolute -top-3 px-2 left-1 text-sm bg-white"
                   >
                     otp
                   </label>
@@ -186,7 +209,8 @@ export const getServerSideProps = (ctx) => {
       location: {
         base: process.env.NEXT_PUBLIC_BASE,
         host: ctx.req.headers.host,
-        href: ctx.req.headers.host + process.env.BASE + ctx.resolvedUrl,
+        href:
+          ctx.req.headers.host + process.env.NEXT_PUBLIC_BASE + ctx.resolvedUrl,
       },
     },
   };

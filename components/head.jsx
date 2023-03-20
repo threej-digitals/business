@@ -8,6 +8,7 @@ export default function HeadAndMetaTag({ title, description }) {
       <meta name="description" content={description} />
       <meta name="title" content={title} />
       <base href={process.env.NEXT_PUBLIC_BASE + "/"} />
+      <link rel="shortcut icon" href="img/logo.png" type="image/png" />
     </Head>
   );
 }

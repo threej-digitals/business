@@ -3,14 +3,12 @@ import Meta from "@/components/head";
 import GlobalContextProvider from "@/context/global";
 import ClientRecord from "@/records/client";
 import Head from "next/head";
+import HeadAndMetaTag from "@/components/head";
 
 export default function Clients({ cookies, location }) {
   return (
     <>
-      <Head>
-        <title>My Clients</title>
-        <Meta />
-      </Head>
+      <HeadAndMetaTag title="My clients" />
       <GlobalContextProvider cookies={cookies} location={location}>
         <Layout />
         <ClientRecord />

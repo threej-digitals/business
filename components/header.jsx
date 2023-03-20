@@ -1,7 +1,9 @@
 import Helper from "@/lib/helper";
+import { useRouter } from "next/router";
 import Button from "./button";
 
 export default function Header({ children }) {
+  const router = new useRouter();
   return (
     <>
       <nav className="p-2 sticky top-0 z-[100] border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 shadow-lg">
@@ -12,6 +14,9 @@ export default function Header({ children }) {
             width={40}
             height={40}
             className="rounded-full border-2 border-orange-600"
+            onClick={() => {
+              router.push("/");
+            }}
           />
           <span
             className="self-center font-serif italic text-xl whitespace-nowrap"
@@ -20,6 +25,9 @@ export default function Header({ children }) {
               background: "linear-gradient(to top, #c2410c 0%, #F50000 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
+            }}
+            onClick={() => {
+              router.push("/");
             }}
           >
             Lekhpal Book

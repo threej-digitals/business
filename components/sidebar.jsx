@@ -1,3 +1,5 @@
+import { BusinessContext } from "@/context/businessContext";
+import { GlobalContext } from "@/context/global";
 import ClientIcon from "@/svg/clientIcon";
 import GearIcon from "@/svg/gearIcon";
 import ListIcon from "@/svg/listIcon";
@@ -10,24 +12,49 @@ import SupplierIcon from "@/svg/supplierIcon";
 import WorkerIcon from "@/svg/workerIcon";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { useContext } from "react";
 import Button from "./button";
 
-function Profile() {
-  if (Cookies?.lpbBID) {
-    return (
-      <div>
-        <OnlineShopIcon width={40} height={40} />
-      </div>
-    );
-  } else {
-    return (
-      <Link href="/login" style={{ padding: "0", background: "transparent" }}>
-        <Button text="Sign In / Log In" />
-      </Link>
-    );
-  }
-}
 export default function Sidebar() {
+  const { cookies } = useContext(GlobalContext);
+  const business = useContext(BusinessContext);
+
+  function Profile() {
+    if (cookies.lpbBID) {
+      //Business profile button
+      return (
+        <div>
+          <Link
+            href="/settings"
+            className="flex gap-4 bg-gray-200 p-1 rounded-full items-center"
+          >
+            <span className=" rounded-full p-2 shadow-md bg-gradient-to-br from-red-300 to-orange-500">
+              <OnlineShopIcon width={25} height={25} />
+            </span>
+            <p className="loggedBusiness flex justify-between w-full text-lg relative">
+              {business.detail.NAME || business.detail.MOBILENO}
+            </p>
+          </Link>
+          <Link href="/">
+            <Button
+              className="mt-4 border-orange-500 border-2 text-center w-full rounded-full p-1 text-orange-600 font-semibold bg-[#fb5b0017]"
+              text="Logout "
+              onClick={() => {
+                Cookies.remove("lpbBID");
+              }}
+            />
+          </Link>
+        </div>
+      );
+    } else {
+      //login button
+      return (
+        <Link href="/login" style={{ padding: "0", background: "transparent" }}>
+          <Button text="Sign In / Log In" />
+        </Link>
+      );
+    }
+  }
   return (
     <>
       <div
@@ -98,6 +125,15 @@ export default function Sidebar() {
             </Link>
           </li>
         </ul>
+        {/* footer */}
+        <div className="mt-10">
+          <p className="text-gray-500 text-sm text-center">
+            A product by{" "}
+            <Link href="https://bento.me/jitendra" target="_blank">
+              ThreeJ
+            </Link>
+          </p>
+        </div>
       </div>
     </>
   );
